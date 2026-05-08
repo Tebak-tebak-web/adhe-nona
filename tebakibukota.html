@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Tebak Ibu Kota Negara</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+text-align:center;
+background:linear-gradient(to bottom right,#4facfe,#00f2fe);
+color:white;
+overflow:hidden;
+}
+
+.page{
+display:none;
+padding:20px;
+}
+
+.active{
+display:block;
+}
+
+input{
+padding:12px;
+width:80%;
+max-width:300px;
+border:none;
+border-radius:10px;
+margin:10px;
+font-size:16px;
+}
+
+button{
+padding:12px 20px;
+border:none;
+border-radius:10px;
+background:white;
+color:#0077cc;
+font-weight:bold;
+margin:10px;
+cursor:pointer;
+font-size:16px;
+}
+
+button:hover{
+background:#dff6ff;
+}
+
+.flag{
+font-size:120px;
+margin:20px;
+}
+
+.card{
+background:white;
+color:black;
+padding:20px;
+border-radius:20px;
+width:90%;
+max-width:400px;
+margin:auto;
+}
+
+#hearts{
+font-size:30px;
+margin:10px;
+}
+
+#score{
+font-size:22px;
+margin-bottom:10px;
+}
+
+.resultText{
+position:fixed;
+left:50%;
+top:45%;
+transform:translateX(-50%);
+font-size:45px;
+font-weight:bold;
+z-index:999;
+animation:textAnim 1.5s forwards;
+}
+
+.sticker{
+position:fixed;
+z-index:999;
+animation:fly 2s forwards;
+}
+
+.earthBox{
+margin-top:30px;
+}
+
+.earth{
+font-size:120px;
+display:inline-block;
+animation:putarBumi 6s linear infinite;
+}
+
+.credit{
+margin-top:20px;
+font-size:18px;
+font-weight:bold;
+color:#fff;
+}
+
+.star{
+font-size:40px;
+cursor:pointer;
+}
+
+.feedbackItem{
+background:white;
+color:black;
+margin:10px auto;
+padding:10px;
+border-radius:15px;
+width:80%;
+max-width:350px;
+}
+
+.hiasanBawah{
+margin-top:40px;
+padding:20px;
+animation:naikTurun 3s infinite;
+}
+
+.hiasanBawah h2{
+color:yellow;
+}
+
+.emojiBaris{
+font-size:35px;
+margin:15px;
+}
+
+@keyframes naikTurun{
+0%{transform:translateY(0px);}
+50%{transform:translateY(-5px);}
+100%{transform:translateY(0px);}
+}
+
+@keyframes putarBumi{
+0%{transform:rotate(0deg);}
+100%{transform:rotate(360deg);}
+}
+
+@keyframes textAnim{
+0%{opacity:0;transform:translate(-50%,20px);}
+20%{opacity:1;}
+100%{opacity:0;transform:translate(-50%,-100px);}
+}
+
+@keyframes fly{
+0%{transform:translateY(0);opacity:1;}
+50%{transform:translateY(-180px);opacity:1;}
+100%{transform:translateY(80px);opacity:0;}
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- HALAMAN AWAL -->
+<div class="page active" id="homePage">
+
+<h1>🌏 Tebak Ibu Kota Negara</h1>
+
+<input type="text" id="nama" placeholder="Masukkan Nama">
+<input type="text" id="kelas" placeholder="Masukkan Kelas">
+
+<br>
+
+<button onclick="mulaiGame()">Mulai Bermain</button>
+
+<div class="hiasanBawah">
+
+<h2>🌏 Ayo Jelajahi Negara-Negara Asia dan Tebak Ibu Kotanya! 🌏</h2>
+
+<div class="emojiBaris">
+📚 🗺️ 🌍 🇮🇩 🇯🇵 🇨🇳 🇰🇷 🇮🇳 🇸🇦
+</div>
+
+<div class="emojiBaris">
+✈️ 🧭 🏆 ⭐ 🎉 🌏 📖 🧠 🎮
+</div>
+
+<div class="emojiBaris">
+🇲🇾 🇹🇭 🇻🇳 🇵🇭 🇸🇬 🇹🇷 🇶🇦 🇦🇪
+</div>
+
+<p>🏆 Belajar sambil bermain itu menyenangkan!</p>
+
+</div>
+
+</div>
+
+<!-- PILIH MODE -->
+<div class="page" id="asiaPage">
+
+<h1>Pilih Mode Bermain</h1>
+
+<button onclick="pilihAsia('tenggara')">Asia Tenggara</button>
+<button onclick="pilihAsia('timur')">Asia Timur</button>
+<button onclick="pilihAsia('selatan')">Asia Selatan</button>
+<button onclick="pilihAsia('barat')">Asia Barat</button>
+<button onclick="pilihAsia('tengah')">Asia Tengah</button>
+<button onclick="pilihAsia('semua')">🌏 Semua Asia</button>
+
+<br><br>
+
+<button onclick="bukaFeedback()">⭐ Feedback</button>
+<button onclick="lihatFeedback()">📋 Lihat Feedback</button>
+
+<div class="earthBox">
+<div class="earth">🌍</div>
+</div>
+
+<div class="credit">By Adhe Nona Acha.W</div>
+
+</div>
+
+<!-- GAME -->
+<div class="page" id="gamePage">
+
+<div id="hearts">❤️❤️❤️❤️❤️❤️❤️❤️</div>
+<div id="score">Skor: 0</div>
+
+<button onclick="kembaliAsia()">⬅ Kembali</button>
+
+<div class="card">
+
+<div class="flag" id="flag">🇮🇩</div>
+<h2 id="countryName">Indonesia</h2>
+
+<input type="text" id="answer" placeholder="Tulis ibu kota">
+
+<br>
+
+<button onclick="cekJawaban()">Jawab</button>
+
+</div>
+
+</div>
+
+<!-- HASIL -->
+<div class="page" id="resultPage">
+
+<h1>📊 HASIL PERMAINAN</h1>
+
+<div class="card">
+
+<h2 id="finalBenar"></h2>
+<h2 id="finalSalah"></h2>
+<h2 id="finalMotivasi"></h2>
+
+<button onclick="mainLagi()">🔄 Main Lagi</button>
+
+</div>
+
+</div>
+
+<!-- FEEDBACK -->
+<div class="page" id="feedbackPage">
+
+<h1>⭐ Feedback</h1>
+
+<div class="card">
+
+<h2>Berikan Penilaian</h2>
+
+<div>
+<span class="star" onclick="pilihBintang(1)">⭐</span>
+<span class="star" onclick="pilihBintang(2)">⭐</span>
+<span class="star" onclick="pilihBintang(3)">⭐</span>
+<span class="star" onclick="pilihBintang(4)">⭐</span>
+<span class="star" onclick="pilihBintang(5)">⭐</span>
+</div>
+
+<input type="text" id="pesanFeedback" placeholder="Tulis feedback">
+
+<br>
+
+<button onclick="kirimFeedback()">Kirim Feedback</button>
+
+</div>
+
+</div>
+
+<!-- LIHAT FEEDBACK -->
+<div class="page" id="lihatFeedbackPage">
+
+<h1>📋 Feedback Pengguna</h1>
+
+<div id="daftarFeedback"></div>
+
+<button onclick="kembaliAsiaDariFeedback()">⬅ Kembali</button>
+
+</div>
+
+<script>
+
+/* ===== GAME DATA ===== */
+let hearts = 8;
+let score = 0;
+let currentQuestion;
+let daftarGame = [];
+let soalSudahMuncul = [];
+let rating = 0;
+let feedbackList = [];
+
+const negaraAsia = {
+tenggara:[
+{negara:"Indonesia", ibu:"jakarta", bendera:"🇮🇩"},
+{negara:"Malaysia", ibu:"kuala lumpur", bendera:"🇲🇾"},
+{negara:"Thailand", ibu:"bangkok", bendera:"🇹🇭"}
+],
+timur:[
+{negara:"Jepang", ibu:"tokyo", bendera:"🇯🇵"},
+{negara:"China", ibu:"beijing", bendera:"🇨🇳"}
+],
+selatan:[
+{negara:"India", ibu:"new delhi", bendera:"🇮🇳"}
+],
+barat:[
+{negara:"Arab Saudi", ibu:"riyadh", bendera:"🇸🇦"}
+],
+tengah:[
+{negara:"Kazakhstan", ibu:"astana", bendera:"🇰🇿"}
+]
+};
+
+/* ===== NAVIGASI ===== */
+function mulaiGame(){
+let nama=document.getElementById("nama").value;
+let kelas=document.getElementById("kelas").value;
+
+if(nama===""||kelas===""){
+alert("Isi nama dan kelas dulu");
+return;
+}
+
+document.getElementById("homePage").classList.remove("active");
+document.getElementById("asiaPage").classList.add("active");
+}
+
+function pilihAsia(wilayah){
+
+if(wilayah==="semua"){
+daftarGame=[
+...negaraAsia.tenggara,
+...negaraAsia.timur,
+...negaraAsia.selatan,
+...negaraAsia.barat,
+...negaraAsia.tengah
+];
+}else{
+daftarGame=negaraAsia[wilayah];
+}
+
+soalSudahMuncul=[];
+document.getElementById("asiaPage").classList.remove("active");
+document.getElementById("gamePage").classList.add("active");
+nextQuestion();
+}
+
+function nextQuestion(){
+
+document.getElementById("answer").value="";
+
+let random;
+do{
+random=Math.floor(Math.random()*daftarGame.length);
+}while(soalSudahMuncul.includes(random));
+
+soalSudahMuncul.push(random);
+
+currentQuestion=daftarGame[random];
+
+document.getElementById("flag").innerHTML=currentQuestion.bendera;
+document.getElementById("countryName").innerHTML=currentQuestion.negara;
+}
+
+function cekJawaban(){
+
+let jawaban=document.getElementById("answer").value.trim().toLowerCase();
+
+if(jawaban===currentQuestion.ibu){
+score++;
+document.getElementById("score").innerHTML="Skor: "+score;
+alert("BENAR 👍");
+}else{
+hearts--;
+document.getElementById("hearts").innerHTML="❤️".repeat(hearts);
+alert("SALAH 😢");
+}
+
+nextQuestion();
+}
+
+function kembaliAsia(){
+document.getElementById("gamePage").classList.remove("active");
+document.getElementById("asiaPage").classList.add("active");
+}
+
+function mainLagi(){
+location.reload();
+}
+
+/* ===== FEEDBACK ===== */
+function bukaFeedback(){
+document.getElementById("asiaPage").classList.remove("active");
+document.getElementById("feedbackPage").classList.add("active");
+}
+
+function pilihBintang(b){
+rating=b;
+alert("Kamu pilih "+b+" bintang ⭐");
+}
+
+function kirimFeedback(){
+
+let pesan=document.getElementById("pesanFeedback").value;
+let nama=document.getElementById("nama").value;
+
+if(pesan===""){
+alert("Isi feedback dulu");
+return;
+}
+
+feedbackList.push({
+nama:nama,
+bintang:rating,
+pesan:pesan
+});
+
+alert("Terima kasih 😊");
+
+document.getElementById("feedbackPage").classList.remove("active");
+document.getElementById("asiaPage").classList.add("active");
+}
+
+function lihatFeedback(){
+
+document.getElementById("asiaPage").classList.remove("active");
+document.getElementById("lihatFeedbackPage").classList.add("active");
+
+let isi="";
+
+for(let i=0;i<feedbackList.length;i++){
+isi+=`
+<div class="feedbackItem">
+<h3>${feedbackList[i].nama}</h3>
+<p>${feedbackList[i].bintang} ⭐</p>
+<p>${feedbackList[i].pesan}</p>
+</div>
+`;
+}
+
+document.getElementById("daftarFeedback").innerHTML=
+isi || "<h3>Belum ada feedback</h3>";
+}
+
+function kembaliAsiaDariFeedback(){
+document.getElementById("lihatFeedbackPage").classList.remove("active");
+document.getElementById("asiaPage").classList.add("active");
+}
+
+</script>
+
+</body>
+</html>
